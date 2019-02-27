@@ -8,7 +8,7 @@ public class Renderer {
 	
 	public void prepare() {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT); //Clears previous colour
-		GL11.glClearColor(1, 0, 0, 1); //'Paint screen' RGB, alpha (This case solid red)
+		GL11.glClearColor(1, 1, 1, 1); //'Paint screen' RGB, alpha (This case solid red)
 	}
 	
 	public void render(RawModel model) { //'RawModel' in replace of 'int', 'float' or the like

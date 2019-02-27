@@ -1,0 +1,11 @@
+#version 400 core
+
+in vec3 colour; //Output of vertexShader
+
+out vec4 out_Colour; //Output colour of pixel
+
+void main(void) {
+
+	out_Colour = vec4(colour, 1.0); //Same as in vertexShader however this time it automatically splits colour into the first 3 sections (1.0 explain later)
+
+}

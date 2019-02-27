@@ -5,6 +5,7 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.RawModel;
 import renderEngine.Renderer;
+import shaders.StaticShader;
 
 public class MainGameLoop {
 
@@ -14,6 +15,7 @@ public class MainGameLoop {
 		
 		Loader loader = new Loader();
 		Renderer renderer = new Renderer();
+		StaticShader shader = new StaticShader();
 		
 		
 		//OpenGL expects vertices to be defined counter clockwise by default
@@ -37,11 +39,15 @@ public class MainGameLoop {
 			renderer.prepare(); //Prepare renderer each frame
 			//Game logic
 			//Render
+			shader.start();
 			renderer.render(model); //Render model
+			shader.stop();
 			DisplayManager.updateDisplay();
 		}
 		
-		loader.cleanUp(); //Clean up
+		//Clean up and close
+		shader.cleanUp(); //Clean up shader
+		loader.cleanUp(); //Clean up loader
 		DisplayManager.closeDisplay(); //Close display
 		
 	}

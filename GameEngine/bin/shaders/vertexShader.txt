@@ -1,0 +1,13 @@
+#version 400 core //What version we are using
+//Excecutes for each vertex
+
+in vec3 position; //input 3D vector, position - form VAO (x,y,z)
+
+out vec3 colour; //Send out positions as colour
+
+void main(void) { //Main method
+
+	gl_Position = vec4(position.x, position.y, position.z, 1.0); //Tell OpenGL where to render vertex on screen. Convert 3D into 4D vector (1.0 explain later)
+	colour = vec3(position.x + 0.5, 1.0, position.y + 0.5); //Set colour to RGB. 0.5 removes our -0.5 so we dont have negative colours
+
+}
