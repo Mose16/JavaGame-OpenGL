@@ -13,6 +13,7 @@ public class StaticShader extends ShaderProgram{
 	@Override //??
 	protected void bindAttributes() { //Protected abstract from super
 		super.bindAttribute(0, "position"); //Runs method to bind positional data in VAO position 0 to program. Cannot do all that here because we do not have access to programID
+		super.bindAttribute(1, "texutreCoords");
 	}
 	
 }

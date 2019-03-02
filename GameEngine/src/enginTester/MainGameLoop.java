@@ -1,11 +1,14 @@
 package enginTester;
 
 import org.lwjgl.opengl.Display;
+
+import models.RawModel;
+import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
-import renderEngine.RawModel;
 import renderEngine.Renderer;
 import shaders.StaticShader;
+import textures.ModelTexture;
 
 public class MainGameLoop {
 
@@ -31,8 +34,17 @@ public class MainGameLoop {
 				3,1,2  //Bottom right triangle (V3,V1,V2)
 		};
 		
+		float[] texutreCoords = {
+				0,0,   //V0
+				0,1,   //V1
+				1,1,   //V2
+				1,0    //V3
+		};
 		
-		RawModel model = loader.loadToVAO(vertices, indices); //Load it to raw model using loadToVao method
+		
+		RawModel model = loader.loadToVAO(vertices, texutreCoords, indices); //Load it to raw model using loadToVao method
+		ModelTexture texture = new ModelTexture(loader.loadTexture("brick")); //Create a new model texture after passing it the textureID created through the loader class
+		TexturedModel texturedModel = new TexturedModel(model,texture); //Combine both model and texture
 		
 		
 		while(!Display.isCloseRequested()) { //Loop until close is clicked
@@ -40,7 +52,7 @@ public class MainGameLoop {
 			//Game logic
 			//Render
 			shader.start();
-			renderer.render(model); //Render model
+			renderer.render(texturedModel); //Render model
 			shader.stop();
 			DisplayManager.updateDisplay();
 		}
