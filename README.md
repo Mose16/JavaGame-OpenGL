@@ -10,3 +10,5 @@ All info in word document.
 -- Tutorial 3 = Creating IntBuffer to save ram and decrease render time
 
 -- Tutorial 4-5 = Creating vertex and fragment shaders to implement colour
+
+-- Tutorial 6 = Textures
