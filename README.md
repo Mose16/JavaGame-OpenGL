@@ -12,3 +12,5 @@ All info in word document.
 -- Tutorial 4-5 = Creating vertex and fragment shaders to implement colour
 
 -- Tutorial 6 = Textures
+
+-- Tutorial 7 = Matrices + unfiforms
