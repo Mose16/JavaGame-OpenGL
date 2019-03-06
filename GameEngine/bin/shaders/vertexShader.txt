@@ -4,11 +4,14 @@
 in vec3 position; //input 3D vector, position - form VAO att1 (x,y,z)
 in vec2 textureCoords; //input 2D vector,  texutreCoords - form VAO att2 (u,v)
 
+out vec3 colour;
 out vec2 pass_textureCoords;
+
+uniform mat4 transformationMatrix;
 
 void main(void) { //Main method
 
-	gl_Position = vec4(position.x, position.y, position.z, 1.0); //Tell OpenGL where to render vertex on screen. Convert 3D into 4D vector (1.0 explain later)
+	gl_Position = transformationMatrix * vec4(position, 1.0); //Tell OpenGL where to render vertex on screen. Convert 3D into 4D vector (1.0 must be scale?). Transformation matrix changes the variables
 	pass_textureCoords = textureCoords;
 
 }

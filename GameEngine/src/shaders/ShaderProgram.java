@@ -3,9 +3,13 @@ package shaders;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 public abstract class ShaderProgram { //Abstract means it represents what all shader programs should have. Other shader classes inherit from this?
 	
@@ -14,15 +18,24 @@ public abstract class ShaderProgram { //Abstract means it represents what all sh
 	private int vertexShaderID;
 	private int fragmentShaderID;
 	
+	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16); //4x4 matrices
+	
 	public ShaderProgram(String vertexFile, String fragmentFile) { //Constructor
 		vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER); //Creates vertex shader and returns ID for that file, loads file into OpenGL
 		fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER); //Creates fragment shader and returns ID for that file, loads file into OpenGL
-		programID = GL20.glCreateProgram(); //Creates program to tie vert and frag together
-		GL20.glAttachShader(programID, vertexShaderID); //Attach shaders to program
+		programID = GL20.glCreateProgram(); //Creates program to tie vertex and fragment together
+		GL20.glAttachShader(programID, vertexShaderID); //Attach shader's to program
 		GL20.glAttachShader(programID, fragmentShaderID);
+		bindAttributes();
 		GL20.glLinkProgram(programID); //Link
 		GL20.glValidateProgram(programID); //Validate program
-		bindAttributes();
+		getAllUniformLocations();
+	}
+	
+	protected abstract void getAllUniformLocations();
+	
+	protected int getUniformLocation(String uniformName) { //As it says
+		return GL20.glGetUniformLocation(programID, uniformName);
 	}
 	
 	public void start() { //Start program
@@ -46,6 +59,31 @@ public abstract class ShaderProgram { //Abstract means it represents what all sh
 	
 	protected void bindAttribute(int attribute, String variableName) { //Bind attribute, must be done within this class as it need programID
 		GL20.glBindAttribLocation(programID, attribute, variableName);
+	}
+	
+	
+	//Load different type of variables to shader's
+	protected void loadFloat(int location, float value) { //Load float uniform at location passing uniform value
+		GL20.glUniform1f(location, value);
+	}
+	
+	protected void loadVector(int location, Vector3f vector) {
+		GL20.glUniform3f(location, vector.x,vector.y,vector.z);
+	}
+	
+	protected void loadBoolean(int location, boolean value) { //Shader's don't actually have boolean so just load 0 or 1
+		float toLoad = 0;
+		if(value) {
+			toLoad = 1;
+		}
+		GL20.glUniform1f(location, toLoad);
+	}
+	
+	protected void loadMatrix(int location, Matrix4f matrix) {
+		matrix.store(matrixBuffer); //Store into matrix buffer
+		matrixBuffer.flip(); //Make it readable
+		GL20.glUniformMatrix4(location, false, matrixBuffer);
+		
 	}
 	
 	private static int loadShader(String file, int type) { //Loads up the vertexShader and fragmentShader for each subclass. Passing it name of file and type of file (vert or frag)

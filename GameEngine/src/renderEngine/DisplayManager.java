@@ -16,9 +16,9 @@ public class DisplayManager {
 	
 	public static void createDisplay() { //~~*Create display
 		
-		ContextAttribs attribs = new ContextAttribs(3,2); //For OpenGL ver-3.2
-		attribs.withForwardCompatible(true);//---DW
-		attribs.withProfileCore(true);//---DW
+		ContextAttribs attribs = new ContextAttribs(3,2)
+		.withForwardCompatible(true)
+		.withProfileCore(true); //For OpenGL Ver-3.2
 		
 		try { //Try catch is filled in auto
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT)); //Set up display
