@@ -8,10 +8,12 @@ out vec3 colour;
 out vec2 pass_textureCoords;
 
 uniform mat4 transformationMatrix;
+uniform mat4 projectionMatrix; //Field of view, affects the x and y when z is altered
+uniform mat4 viewMatrix; //Camera movement
 
 void main(void) { //Main method
 
-	gl_Position = transformationMatrix * vec4(position, 1.0); //Tell OpenGL where to render vertex on screen. Convert 3D into 4D vector (1.0 must be scale?). Transformation matrix changes the variables
+	gl_Position = viewMatrix * projectionMatrix * transformationMatrix * vec4(position, 1.0); //Tell OpenGL where to render vertex on screen. Convert 3D into 4D vector (1.0 must be scale?). Transformation matrix changes the variables
 	pass_textureCoords = textureCoords;
 
 }
