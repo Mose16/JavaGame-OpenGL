@@ -14,3 +14,5 @@ All info in word document.
 -- Tutorial 6 = Textures
 
 -- Tutorial 7 = Matrices + unfiforms
+
+-- Tutorial 7 = Camera viewMatrix and projectionMatrix
