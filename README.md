@@ -16,3 +16,5 @@ All info in word document.
 -- Tutorial 7 = Matrices + unfiforms
 
 -- Tutorial 7 = Camera viewMatrix and projectionMatrix
+
+-- Tutorial 9-10 = Creating model imorts
