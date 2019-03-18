@@ -9,6 +9,7 @@ import models.RawModel;
 import models.TexturedModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+import renderEngine.OBJLoader;
 import renderEngine.Renderer;
 import shaders.StaticShader;
 import textures.ModelTexture;
@@ -25,90 +26,11 @@ public class MainGameLoop {
 		
 		
 		//OpenGL expects vertices to be defined counter clockwise by default
-		float[] vertices = {			
-				-0.5f,0.5f,-0.5f,	
-				-0.5f,-0.5f,-0.5f,	
-				0.5f,-0.5f,-0.5f,	
-				0.5f,0.5f,-0.5f,		
-				
-				-0.5f,0.5f,0.5f,	
-				-0.5f,-0.5f,0.5f,	
-				0.5f,-0.5f,0.5f,	
-				0.5f,0.5f,0.5f,
-				
-				0.5f,0.5f,-0.5f,	
-				0.5f,-0.5f,-0.5f,	
-				0.5f,-0.5f,0.5f,	
-				0.5f,0.5f,0.5f,
-				
-				-0.5f,0.5f,-0.5f,	
-				-0.5f,-0.5f,-0.5f,	
-				-0.5f,-0.5f,0.5f,	
-				-0.5f,0.5f,0.5f,
-				
-				-0.5f,0.5f,0.5f,
-				-0.5f,0.5f,-0.5f,
-				0.5f,0.5f,-0.5f,
-				0.5f,0.5f,0.5f,
-				
-				-0.5f,-0.5f,0.5f,
-				-0.5f,-0.5f,-0.5f,
-				0.5f,-0.5f,-0.5f,
-				0.5f,-0.5f,0.5f
-				
-		};
+		RawModel model = OBJLoader.loadObjectModel("box", loader);
 		
-		float[] textureCoords = {
-				
-				0,0,
-				0,1,
-				1,1,
-				1,0,			
-				0,0,
-				0,1,
-				1,1,
-				1,0,			
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0,
-				0,0,
-				0,1,
-				1,1,
-				1,0
-
-				
-		};
-		
-		int[] indices = {
-				0,1,3,	
-				3,1,2,	
-				4,5,7,
-				7,5,6,
-				8,9,11,
-				11,9,10,
-				12,13,15,
-				15,13,14,	
-				16,17,19,
-				19,17,18,
-				20,21,23,
-				23,21,22
-
-		};
-		
-		
-		RawModel model = loader.loadToVAO(vertices, textureCoords, indices); //Load it to raw model using loadToVao method
-		ModelTexture texture = new ModelTexture(loader.loadTexture("brick")); //Create a new model texture after passing it the textureID created through the loader class
+		ModelTexture texture = new ModelTexture(loader.loadTexture("boxTexture")); //Create a new model texture after passing it the textureID created through the loader class
 		TexturedModel texturedModel = new TexturedModel(model,texture); //Combine both model and texture
-		Entity entity = new Entity(texturedModel, new Vector3f(0,0,-5), 0, 0, 0, 1); //Create one object
+		Entity entity = new Entity(texturedModel, new Vector3f(0,0,-50), 0, 0, 0, 1); //Create one object
 		Camera camera = new Camera();
 		
 		
@@ -116,7 +38,7 @@ public class MainGameLoop {
 			//Game logic
 			
 			entity.increasePosition(0, 0, 0);
-			entity.increaseRotation(1, 1, 0);
+			entity.increaseRotation(0, 1, 0.5f);
 			camera.move();
 			
 			//Render
