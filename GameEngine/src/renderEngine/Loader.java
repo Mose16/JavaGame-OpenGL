@@ -25,11 +25,12 @@ public class Loader { //Creates data for VAO and VBO to be stored in RawModel ob
 	private List<Integer> textures = new ArrayList<Integer>();
 	
 	
-	public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices) { //Creating RawModel object? 'float[] position' creates an array of float variables called position
+	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) { //Creating RawModel object? 'float[] position' creates an array of float variables called position
 		int vaoID = createVAO(); //Storing vaoID in vaoID variable through 'createVAO' return function
 		bindIndicesBuffer(indices); //Bind to VAO
 		storeDataInAttributeList(0, 3, positions); //Store positions in attribute list 0. 3 = size
 		storeDataInAttributeList(1, 2, textureCoords); //Store textureCoords in attribute list 1. 2 = size
+		storeDataInAttributeList(2, 3, normals); //Store nomrals in attribute list 2. 3 = size
 		unbindVAO(); //Clean it up?
 		return new RawModel(vaoID, indices.length); //Create the new RawModel object and give it the vaoID and number of vertex's
 	}

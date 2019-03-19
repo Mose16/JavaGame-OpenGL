@@ -1,19 +1,27 @@
 #version 400 core //What version we are using
 //Executes for each vertex
 
-in vec3 position; //input 3D vector, position - form VAO att1 (x,y,z)
-in vec2 textureCoords; //input 2D vector,  texutreCoords - form VAO att2 (u,v)
+in vec3 position; //input 3D vector, position - form VAO att0 (x,y,z)
+in vec2 textureCoords; //input 2D vector,  texutreCoords - form VAO att1 (u,v)
+in vec3 normal; //input 3D vector,  normal - form VAO att2 (x, y, z)
 
-out vec3 colour;
 out vec2 pass_textureCoords;
+out vec3 surfaceNormal;
+out vec3 toLightVector;
+
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix; //Field of view, affects the x and y when z is altered
 uniform mat4 viewMatrix; //Camera movement
+uniform vec3 lightPosition;
 
 void main(void) { //Main method
-
-	gl_Position =  projectionMatrix * viewMatrix * transformationMatrix * vec4(position, 1.0); //Tell OpenGL where to render vertex on screen. Convert 3D into 4D vector (1.0 must be scale?). Transformation matrix changes the variables
+	
+	vec4 worldPosition = transformationMatrix * vec4(position, 1.0); //Accounts for rotation due to camera
+	gl_Position =  projectionMatrix * viewMatrix * worldPosition; //Tell OpenGL where to render vertex on screen. Convert 3D into 4D vector (1.0 must be scale?). Transformation matrix changes the variables
 	pass_textureCoords = textureCoords;
+	
+	surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz; //Convert 3d to 4d then multiply by transformationMatrix, then 'swizzle' it back to 3D
+	toLightVector = lightPosition - worldPosition.xyz;
 
 }

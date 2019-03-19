@@ -40,6 +40,7 @@ public class Renderer {
 		GL30.glBindVertexArray(model.getVaoID()); //Bind VAO so we can read it
 		GL20.glEnableVertexAttribArray(0); //Activate attrib array 0 (vertex co-ordinates)
 		GL20.glEnableVertexAttribArray(1); //Activate attrib array 1 (textureCoords)
+		GL20.glEnableVertexAttribArray(2); //Activate attrib array 2 (normal)
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale()); //Get values for transforamatuion matrix
 		shader.loadTransformationMatrix(transformationMatrix); //Send matrix to shader
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);//Activates the texture bank 0 so that fragment shader has access to it (sampler2D)
@@ -47,6 +48,7 @@ public class Renderer {
 		GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVertexCount(), GL11.GL_UNSIGNED_INT, 0); //Draw the triangles based on the VAO starting at position '0' in the Attrib array (VBO~)
 		GL20.glDisableVertexAttribArray(0); //Disable attrib list
 		GL20.glDisableVertexAttribArray(1);
+		GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0); //Unbind VAO
 	}
 	
