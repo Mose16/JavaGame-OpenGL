@@ -18,3 +18,5 @@ All info in word document.
 -- Tutorial 7 = Camera viewMatrix and projectionMatrix
 
 -- Tutorial 9-10 = Creating model imorts
+
+-- Tutorial 11 = Per Pixel Ligthing
