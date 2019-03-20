@@ -20,3 +20,5 @@ All info in word document.
 -- Tutorial 9-10 = Creating model imorts
 
 -- Tutorial 11 = Per Pixel Ligthing
+
+-- Tutorial 12 = Specular lighting (reflections)
