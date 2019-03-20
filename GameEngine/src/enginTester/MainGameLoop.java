@@ -27,11 +27,15 @@ public class MainGameLoop {
 		
 		
 		//OpenGL expects vertices to be defined counter clockwise by default
-		RawModel model = OBJLoader.loadObjectModel("dragon", loader);
+		RawModel model = OBJLoader.loadObjectModel("stall", loader);
 		
-		ModelTexture texture = new ModelTexture(loader.loadTexture("boxTexture")); //Create a new model texture after passing it the textureID created through the loader class
-		TexturedModel texturedModel = new TexturedModel(model,texture); //Combine both model and texture
-		Entity entity = new Entity(texturedModel, new Vector3f(0,0,-25), 0, 0, 0, 1); //Create one object
+		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("stallTexture"))); //Combine both model and texture ||| //Create a new model texture after passing it the textureID created through the loader class
+		ModelTexture texture = staticModel.getTexture();
+		texture.setShineDamper(0.1f);
+		texture.setReflectivity(0);
+		
+		
+		Entity entity = new Entity(staticModel, new Vector3f(0,0,-25), 0, 0, 0, 1); //Create one object
 		Light light = new Light(new Vector3f(0, 0, -20), new Vector3f(1,1,1)); //Position and colour
 		Camera camera = new Camera();
 		

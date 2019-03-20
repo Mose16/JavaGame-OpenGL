@@ -8,6 +8,7 @@ in vec3 normal; //input 3D vector,  normal - form VAO att2 (x, y, z)
 out vec2 pass_textureCoords;
 out vec3 surfaceNormal;
 out vec3 toLightVector;
+out vec3 toCameraVector;
 
 
 uniform mat4 transformationMatrix;
@@ -23,5 +24,6 @@ void main(void) { //Main method
 	
 	surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz; //Convert 3d to 4d then multiply by transformationMatrix, then 'swizzle' it back to 3D
 	toLightVector = lightPosition - worldPosition.xyz;
+	toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz; //viewMatrix contains the negative version of the cameras position(because all objects move not the camera) there for we must inverse
 
 }

@@ -11,6 +11,7 @@ import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
 import shaders.StaticShader;
+import textures.ModelTexture;
 import toolBox.Maths;
 
 public class Renderer {
@@ -35,17 +36,19 @@ public class Renderer {
 	}
 	
 	public void render(Entity entity, StaticShader shader) { //Pass an entity to render and a shader, also pass a staticShader so that we can upload the entity transformation
-		TexturedModel texturedModel = entity.getModel(); //Get the textured model from the entity
-		RawModel model = texturedModel.getRawModel(); //Get the raw model data
-		GL30.glBindVertexArray(model.getVaoID()); //Bind VAO so we can read it
+		TexturedModel model = entity.getModel(); //Get the textured model from the entity
+		RawModel rawModel = model.getRawModel(); //Get the raw model data
+		GL30.glBindVertexArray(rawModel.getVaoID()); //Bind VAO so we can read it
 		GL20.glEnableVertexAttribArray(0); //Activate attrib array 0 (vertex co-ordinates)
 		GL20.glEnableVertexAttribArray(1); //Activate attrib array 1 (textureCoords)
 		GL20.glEnableVertexAttribArray(2); //Activate attrib array 2 (normal)
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale()); //Get values for transforamatuion matrix
 		shader.loadTransformationMatrix(transformationMatrix); //Send matrix to shader
+		ModelTexture texture = model.getTexture();
+		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);//Activates the texture bank 0 so that fragment shader has access to it (sampler2D)
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturedModel.getTexture().getID()); //Bind texture to texture bank by giving it texture ID
-		GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVertexCount(), GL11.GL_UNSIGNED_INT, 0); //Draw the triangles based on the VAO starting at position '0' in the Attrib array (VBO~)
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID()); //Bind texture to texture bank by giving it texture ID
+		GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(), GL11.GL_UNSIGNED_INT, 0); //Draw the triangles based on the VAO starting at position '0' in the Attrib array (VBO~)
 		GL20.glDisableVertexAttribArray(0); //Disable attrib list
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);
