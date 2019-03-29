@@ -22,3 +22,5 @@ All info in word document.
 -- Tutorial 11 = Per Pixel Ligthing
 
 -- Tutorial 12 = Specular lighting (reflections)
+
+-- Tutorial 13 = Optimisations
