@@ -1,0 +1,38 @@
+#version 400 core
+
+in vec2 pass_textureCoords;
+in vec3 surfaceNormal;
+in vec3 toLightVector;
+in vec3 toCameraVector;
+
+out vec4 out_Colour; //Output colour of pixel
+
+uniform sampler2D textureSampler; //IDK. Basically represents texture
+uniform vec3 lightColour;
+uniform float shineDamper; //How far can the camera be from reflection to see difference
+uniform float reflectivity;
+
+void main(void) {
+	
+	
+	//DOT product: 
+	vec3 unitNormal = normalize(surfaceNormal); //Normalize makes sure size of it is 1 so that we know it wont affect the dot product. Normalize = Size = 1, direction = the same
+	vec3 unitLightVector = normalize(toLightVector);
+	
+	float nDotl = dot(unitNormal, unitLightVector); //Do dot math
+	float brightness = max(nDotl, 0.1); //If nDotl is less than 0.1, make it = 0.1 otherwise keep the same
+	vec3 diffuse = brightness * lightColour; //Final light value * colour = final colour value
+	
+	vec3 unitVectorToCamera = normalize(toCameraVector); //We dont need size, only direction
+	vec3 lightDirection = -unitLightVector;
+	vec3 reflectedLightDirection = reflect(lightDirection, unitNormal); //Reflect does the reflection calculations for us
+	
+	float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
+	specularFactor = max(specularFactor, 0.0);
+	float dampedFactor = pow(specularFactor, shineDamper); //Emphasizes the difference. 0.1^2 = 0.01 while 1^2 = 1. Lower the number the more it is emphasized
+	vec3 finalSpecular = dampedFactor * lightColour * reflectivity;
+
+
+	out_Colour = vec4(diffuse, 1.0) * texture(textureSampler, pass_textureCoords) + vec4(finalSpecular, 1.0); //Returns colour of pixel on texture at those coords
+
+}
